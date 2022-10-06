@@ -119,5 +119,5 @@ for (var i = 0; i < server5l; i++) {
 ns.tprint('5 port server with highest max money:' + server5[Number(name)])
 ns.tprint('Required hacking level:' + hl1)
 ns.tprint('Their max money:' + Number(s5))
-
+ 
 }
