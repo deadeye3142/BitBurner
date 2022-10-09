@@ -1,9 +1,10 @@
 /** @param {NS} ns */
+
 export async function main(ns) {
-	var target = "zer0";
+	const target = ns.read('hacktarget.txt');
 	var moneyThresh = ns.getServerMaxMoney(target) * 0.75;
 	var securityThresh = ns.getServerMinSecurityLevel(target) + 7;
-
+    
 
     while(true) {
     if (ns.getServerSecurityLevel(target) > securityThresh) {
@@ -17,4 +18,5 @@ export async function main(ns) {
         await ns.hack(target);
     }
     }
+    
 }

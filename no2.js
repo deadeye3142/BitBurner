@@ -10,7 +10,7 @@ export async function main(ns) {
                   'galactic-cyber','aerocorp','omnia','icarus','deltaone','solaris','defcomm','infocomm','zeus-med','taiyang-digital','zb-institute','darkweb','titan-labs','helios','vitalife','4sigma','kuai-gong','omnitek','nwo','powerhouse-fitness','megacorp','stormtech','microdyne','fulcrumtech','b-and-a','blade','clarkinc','ecorp','fulcrumassets','The-Cave','w0r1d_d43m0n'];
 
   //list of scripts to run
-  const script = ['foo.js','iron.js','joth.js','zero.js'];
+  const script = ['foo.js','iron.js','joth.js','zero.js','varhack.js'];
   const scripttarget = ['foodnstuff','iron-gym','rothman-uni'];
   var hl = ns.getHackingLevel();
 
@@ -18,8 +18,9 @@ export async function main(ns) {
   var scriptl = script.length;
   var programs = 0;
   var reset = ns.args[0];
-  
+ 
   //reset if 4 is entered in arg 0
+   
   if (reset == 4) {
     ns.killall('home');
     for (var i = 0; i < serverl; i++) {
@@ -44,6 +45,27 @@ export async function main(ns) {
   if (ns.fileExists("SQLInject.exe", "home")) {
     programs = programs + 1
   }
+
+  //Finds the highest value target for the scripts to attack
+  //--------------------------------------------------------------
+  for (var i = 0; i < serverl; i++) {
+
+    var target = server[Number(i)];
+    var smoney = ns.getServerMaxMoney(target)
+    var shackinglevel = ns.getServerRequiredHackingLevel(target)
+    var highvalue = 0
+
+    if (smoney > highvalue && shackinglevel <= hl) {
+      
+      highvalue = smoney
+      var name = i
+
+    }
+  }
+  var extarget = server[Number(name)];
+  ns.tprint('Highest value target:' + " " + extarget)
+  ns.write('hacktarget.txt',extarget,'w');
+//----------------------------------------------------------------
 
   //bulk of operations
   for (var i = 0; i < serverl; i++) {
@@ -74,38 +96,18 @@ export async function main(ns) {
       // moves files to target server
       for (var s = 0; s < scriptl; s++) {
         ns.scp(script[Number(s)], target);
+        ns.scp('hacktarget.txt',target);
       }
        
-    }
+    } 
 
     if (ram > 0 && hl > shl) {
-      ns.tprint('Running script on' + ' ' + target);
-      if (hl >= ns.getServerRequiredHackingLevel('rothman-uni')) {
-        var m = ns.getServerMaxRam(target);
-        var s = ns.getScriptRam(script[2]);
-        var q = (Math.floor(m / s));
-        ns.exec(script[2], target, Number(q));
-
-      } else if (hl >= ns.getServerRequiredHackingLevel('zer0')) {
-        var m = ns.getServerMaxRam(target);
-        var s = ns.getScriptRam(script[2]);
-        var q = (Math.floor(m / s));
-        ns.exec(script[3], target, Number(q));
-
-      }else if (hl >= ns.getServerRequiredHackingLevel('iron-gym')) {
-        var m = ns.getServerMaxRam(target);
-        var s = ns.getScriptRam(script[2]);
-        var q = (Math.floor(m / s));
-        ns.exec(script[1], target, Number(q));
-
-      } else {
-        var m = ns.getServerMaxRam(target);
-        var s = ns.getScriptRam(script[2]);
-        var q = (Math.floor(m / s));
-        ns.exec(script[0], target, Number(q));
-
-      }
+      var m = ns.getServerMaxRam(target);
+      var s = ns.getScriptRam(script[4]);
+      var q = (Math.floor(m / s));
+      ns.exec(script[4], target, Number(q));
     }
+    
   }
 
 
@@ -127,8 +129,13 @@ export async function main(ns) {
 		}
   }
   //-----------------------------------------------------------------------------------------------------------------
+ 
+  var maxram = ns.getServerMaxRam(target);
+  var scrram = ns.getScriptRam(script[2]);
+  var q = (Math.floor((maxram / scrram) - (ns.getScriptRam('no2.js'))));
 
-
+  //ns.exec(script[0], target, Number(q));
 
 
 } 
+
