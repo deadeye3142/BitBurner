@@ -98,44 +98,18 @@ export async function main(ns) {
         ns.scp(script[Number(s)], target);
         ns.scp('hacktarget.txt',target);
       }
-       
-    } 
+    }  
 
     if (ram > 0 && hl > shl) {
-      var m = ns.getServerMaxRam(target);
-      var s = ns.getScriptRam(script[4]);
-      var q = (Math.floor(m / s));
+      var maxram = ns.getServerMaxRam(target);
+      var homeram = ns.getServerMaxRam('home');
+      var scrram = ns.getScriptRam(script[4]);
+      var q = (Math.floor(maxram / scrram));
+      var hq = (Math.floor(homeram / scrram - ns.getScriptRam('no2.js')));
       ns.exec(script[4], target, Number(q));
+      ns.tprint(Number(hq));
+      ns.run(script[4],Number(hq));
+      
     }
-    
   }
-
-
-  // This is legacy code and needs updating
-  //-----------------------------------------------------------------------------------------------------------------
-  //this runs a dual hack on iron gym and sushi from home
-  if(ns.hasRootAccess('iron-gym') == true && ns.getServerRequiredHackingLevel('iron-gym') <= ns.getHackingLevel()) {
-    var m = ns.getServerMaxRam("home");
-		var s = ns.getScriptRam("iron.js");
-		var p = ns.getScriptRam("hara.script");
-		var q = ((Math.floor(m / s)) / 2 - (ns.getScriptRam("ngv1.script")) / 2);
-		var h = ((Math.floor(m / p)) / 2 - (ns.getScriptRam("ngv1.script")) / 2);
-
-    if (ns.hasRootAccess("iron-gym") == true) {
-			ns.run("iron.js", Number(q));
-		}
-		if (ns.hasRootAccess("harakiri-sushi") == true) {
-			ns.run("hara.script", Number(h));
-		}
-  }
-  //-----------------------------------------------------------------------------------------------------------------
- 
-  var maxram = ns.getServerMaxRam(target);
-  var scrram = ns.getScriptRam(script[2]);
-  var q = (Math.floor((maxram / scrram) - (ns.getScriptRam('no2.js'))));
-
-  //ns.exec(script[0], target, Number(q));
-
-
-} 
-
+}
