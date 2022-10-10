@@ -47,7 +47,7 @@ export async function main(ns) {
     var shackinglevel = ns.getServerRequiredHackingLevel(target)
     var highvalue = 0
 
-    if (smoney > highvalue && shackinglevel <= hl) {
+    if (smoney > highvalue && shackinglevel <= hl && ns.getServerNumPortsRequired(target) <= programs) {
       
       highvalue = smoney
       var name = i
@@ -56,15 +56,13 @@ export async function main(ns) {
   var extarget = server[Number(name)];
   ns.tprint('Highest value target:' + " " + extarget)
   ns.write('hacktarget.txt',extarget,'w');
-//----------------------------------------------------------------
-//bulk of operations
+//--------------------bulk of operations--------------------------
   for (var i = 0; i < serverl; i++) {
     var target = server[Number(i)];
     var ram = ns.getServerMaxRam(target);
     var shl = ns.getServerRequiredHackingLevel(target);
     var ports = ns.getServerNumPortsRequired(target);
-
-    //runs all the vulnerabilities as well as nukes the target
+//----runs all the vulnerabilities as well as nukes the target----
     if (ports <= programs && shl <= hl) {
       if (ns.fileExists("BruteSSH.exe", "home")) {
         ns.brutessh(target);
